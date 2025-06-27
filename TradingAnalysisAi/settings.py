@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-ROOT_URLCONF = 'TradingAssistantSite.urls'
+ROOT_URLCONF = 'TradingAnalysisAi.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'TradingAssistantSite.wsgi.application'
+WSGI_APPLICATION = 'TradingAnalysisAi.wsgi.application'
 
 # for testing
 DATABASES = {
