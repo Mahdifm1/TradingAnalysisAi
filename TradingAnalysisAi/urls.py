@@ -16,4 +16,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('auth/', include('dj_rest_auth.urls')),
+
+    # --- Market Data Management ---
+    path('market/', include('market_data.urls')),
 ]
