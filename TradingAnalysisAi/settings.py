@@ -33,10 +33,12 @@ INSTALLED_APPS = [
     'djcelery_email',
     'corsheaders',  # For Cross-Origin Resource Sharing
     'drf_spectacular',  # For API Documentation
+    'django_celery_beat',
 
     # Local apps
     'accounts.apps.AccountsConfig',
     'market_data.apps.MarketDataConfig',
+    'ai_signals.apps.AiSignalsConfig',
 ]
 
 MIDDLEWARE = [
@@ -70,13 +72,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TradingAnalysisAi.wsgi.application'
 
-# for testing
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),  # This will be 'db' inside Docker
+        'PORT': '5432',
     }
 }
+
+# for testing
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -141,7 +154,6 @@ REST_FRAMEWORK = {
     },
 }
 
-
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY': False,
@@ -166,8 +178,10 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
-CELERY_BROKER_URL = os.environ.get('REDIS_URL')
-CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL')
+# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+# CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -192,4 +206,19 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'market_data.tasks.schedule_all_active_symbols_fetching',
         'schedule': 900.0,  # 900 seconds = 15 minutes
     },
+}
+
+# Liara AI API Settings
+LIARA_API_KEY = os.environ.get('LIARA_API_KEY')
+LIARA_BASE_URL = "https://ai.liara.ir/v1"
+
+# cache config
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get('CELERY_BROKER_URL'),  # Use the same Redis DB as Celery
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
 }
