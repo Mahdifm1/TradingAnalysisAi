@@ -14,11 +14,10 @@ class KucoinClient:
         Fetches K-line (candle) data for a given symbol.
         Docs: https://docs.kucoin.com/#get-klines
         """
-        endpoint = "/api/v1/market/candles"
-        params = {'symbol': symbol, 'type': interval}
+        endpoint = f"/api/v1/market/candles?type={interval}min&symbol={symbol}"
 
         try:
-            response = requests.get(f"{self.BASE_URL}{endpoint}", params=params)
+            response = requests.get(f"{self.BASE_URL}{endpoint}")
             response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
             data = response.json().get('data', [])
 
