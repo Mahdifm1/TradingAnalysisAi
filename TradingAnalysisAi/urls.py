@@ -19,4 +19,9 @@ urlpatterns = [
 
     # --- Market Data Management ---
     path('market/', include('market_data.urls')),
+
+    # --- AI Signals ---
+    path('signals/', include('ai_signals.urls')),
+
+
 ]
