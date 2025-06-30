@@ -23,5 +23,7 @@ urlpatterns = [
     # --- AI Signals ---
     path('signals/', include('ai_signals.urls')),
 
+    # --- Chat With AI ---
+    path('chat/', include('chat.urls')),
 
 ]

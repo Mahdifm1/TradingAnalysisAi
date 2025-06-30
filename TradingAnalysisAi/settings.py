@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'market_data.apps.MarketDataConfig',
     'ai_signals.apps.AiSignalsConfig',
+    'chat.apps.ChatConfig'
 ]
 
 MIDDLEWARE = [
