@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
+from accounts.views import CustomVerifyEmailView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -13,7 +15,8 @@ urlpatterns = [
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
     # --- Authentication & User Management ---
-    path('accounts/', include('accounts.urls')),
+    path('auth/registration/account-confirm-email/<str:key>/', CustomVerifyEmailView.as_view(),
+         name='account_confirm_email'),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('auth/', include('dj_rest_auth.urls')),
 
