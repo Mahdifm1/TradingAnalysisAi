@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .models import Signal
 from .serializers import SignalSerializer
 from .redis_client import get_cached_latest_signal, cache_latest_signal
 from market_data.models import Symbol
+from accounts.permissions import IsUserVerified
 
 
 class LatestSignalView(APIView):
@@ -13,7 +13,7 @@ class LatestSignalView(APIView):
     Provides the latest AI-generated signal for a given symbol.
     Implements the Cache-Aside pattern for high performance.
     """
-    permission_classes = [AllowAny]
+    permission_classes = [IsUserVerified]
 
     def get(self, request, symbol_name, format=None):
         print(Symbol.objects.values_list('name', flat=True))

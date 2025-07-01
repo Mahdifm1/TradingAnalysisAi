@@ -1,10 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import ChatMessage, Symbol
 from .serializers import ChatMessageSerializer, UserMessageSerializer
 from .services import ChatAIService
+from accounts.permissions import IsUserVerified
 
 
 class ChatConversationView(APIView):
@@ -13,7 +13,7 @@ class ChatConversationView(APIView):
     GET: Retrieves the chat history.
     POST: Submits a new message and gets an AI response.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsUserVerified]
 
     def get(self, request, symbol_name, format=None):
         """Returns the last 20 messages for the user and symbol."""

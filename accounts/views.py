@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny
 class CustomVerifyEmailView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, key, *args, **kwargs):
+    def get(self, request, key, format=None, *args, **kwargs):
         try:
             confirmation = EmailConfirmationHMAC.from_key(key)
             if confirmation:
